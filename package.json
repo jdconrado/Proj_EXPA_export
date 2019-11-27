@@ -1,0 +1,23 @@
+{
+  "name": "proj_expa_export",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdconrado/Proj_EXPA_export.git"
+  },
+  "keywords": [
+    "EXPA",
+    "AIESEC"
+  ],
+  "author": "Juan Conrado",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jdconrado/Proj_EXPA_export/issues"
+  },
+  "homepage": "https://github.com/jdconrado/Proj_EXPA_export#readme"
+}
