@@ -112,7 +112,6 @@ QueryCtrl.sendRequest = (DATA) => {
 
 QueryCtrl.processData = async (type, req) =>{
     try{
-        console.log(type);
         let apps;
         if(String(type).includes('APP')){
             apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, 1, 100));
@@ -210,27 +209,30 @@ QueryCtrl.processData = async (type, req) =>{
 
 QueryCtrl.deleteOldFiles = () =>{
     let uploadsDir = __dirname + '/Documents';
-
-    fs.readdir(uploadsDir, function(err, files) {
-    files.forEach(function(file, index) {
-        fs.stat(path.join(uploadsDir, file), function(err, stat) {
-        let endTime, now;
-        if (err) {
-            return console.error(err);
-        }
-        now = new Date().getTime();
-        endTime = new Date(stat.ctime).getTime() + 3600000;
-        if (now > endTime) {
-            return rimraf(path.join(uploadsDir, file), function(err) {
+    try{
+        fs.readdir(uploadsDir, function(err, files) {
+        files.forEach(function(file, index) {
+            fs.stat(path.join(uploadsDir, file), function(err, stat) {
+            let endTime, now;
             if (err) {
                 return console.error(err);
             }
-            console.log('successfully deleted all old files');
+            now = new Date().getTime();
+            endTime = new Date(stat.ctime).getTime() + 3600000;
+            if (now > endTime) {
+                return rimraf(path.join(uploadsDir, file), function(err) {
+                if (err) {
+                    return console.error(err);
+                }
+                console.log('successfully deleted all old files');
+                });
+            }
             });
-        }
         });
-    });
-    });
+        });
+    }catch(er){
+        console.log('Error while deleting: '+ er)
+    }
 }
 
 module.exports = QueryCtrl;
