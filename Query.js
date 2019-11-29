@@ -73,9 +73,9 @@ QueryCtrl.formAppReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-              person_home_lc: [${req.body.lc}],
-              created_at: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
-              programmes: ${req.body.product}
+                person_committee: ${req.body.lc},
+                created_at: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                programmes: ${req.body.product}
             }${QBody}`})
     };
 }
