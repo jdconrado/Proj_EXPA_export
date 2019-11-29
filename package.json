@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/jdconrado/Proj_EXPA_export/issues"
   },
-  "homepage": "https://github.com/jdconrado/Proj_EXPA_export#readme"
+  "homepage": "https://github.com/jdconrado/Proj_EXPA_export#readme",
+  "dependencies": {
+    "csv-writer": "^1.5.0",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0",
+    "rimraf": "^3.0.0"
+  }
 }
