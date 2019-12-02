@@ -145,29 +145,34 @@ QueryCtrl.processData = async (type, req) =>{
             let page = 1;
             do {
                 apps.data.forEach(app => {
-                    matrix.push([
-                        app.opportunity.programme.short_name_display,
-                        app.person.id,
-                        app.status,
-                        app.person.full_name,
-                        app.person.contact_detail.phone,
-                        app.person.contact_detail.email,
-                        app.person.meta.allow_phone_communication,
-                        app.person.meta.allow_email_communication,
-                        String(app.created_at).split('T')[0],
-                        app.date_matched ? String(app.date_matched).split('T')[0] : '',
-                        app.date_approved ? String(app.date_approved).split('T')[0]: '',
-                        app.date_realized ? String(app.date_realized).split('T')[0]: '',
-                        app.experience_start_date ? String(app.experience_start_date).split('T')[0]: '',
-                        app.experience_end_date ? String(app.experience_end_date).split('T')[0]: '',
-                        app.person.home_lc.name,
-                        app.person.home_lc.parent.name,
-                        app.opportunity.id,
-                        app.opportunity.title,
-                        app.opportunity.sub_product ? app.opportunity.sub_product.name : '-',
-                        app.opportunity.home_lc.name,
-                        app.opportunity.home_lc.parent.name
-                    ]);
+                    try{
+                        matrix.push([
+                            app.opportunity.programme.short_name_display,
+                            app.person.id,
+                            app.status,
+                            app.person.full_name,
+                            app.person.contact_detail.phone,
+                            app.person.contact_detail.email,
+                            app.person.meta.allow_phone_communication,
+                            app.person.meta.allow_email_communication,
+                            String(app.created_at).split('T')[0],
+                            app.date_matched ? String(app.date_matched).split('T')[0] : '',
+                            app.date_approved ? String(app.date_approved).split('T')[0]: '',
+                            app.date_realized ? String(app.date_realized).split('T')[0]: '',
+                            app.experience_start_date ? String(app.experience_start_date).split('T')[0]: '',
+                            app.experience_end_date ? String(app.experience_end_date).split('T')[0]: '',
+                            app.person.home_lc.name,
+                            app.person.home_lc.parent.name,
+                            app.opportunity.id,
+                            app.opportunity.title,
+                            app.opportunity.sub_product ? app.opportunity.sub_product.name : '-',
+                            app.opportunity.home_lc.name,
+                            app.opportunity.home_lc.parent.name
+                        ]);
+                    }catch(err){
+                        console.log('Error al guardar una app: ' + err)
+                        continue;
+                    }
                 });
                 page++;
                 if( page<totalP){
