@@ -171,7 +171,6 @@ QueryCtrl.processData = async (type, req) =>{
                         ]);
                     }catch(err){
                         console.log('Error al guardar una app: ' + err)
-                        continue;
                     }
                 });
                 page++;
