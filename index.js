@@ -14,6 +14,7 @@ app.use(express.json());
 //Routes
 
 app.post('/applications/', QueryCtrl.getAPPs);
+app.post('/opportunities/', QueryCtrl.getOPPs);
 
 //Static files
 

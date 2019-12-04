@@ -62,6 +62,45 @@ QueryCtrl.formReqBody = (page, per_page) => {
     }}`;
 }
 
+QueryCtrl.formOppsReqBody = (page, per_page) => {
+    return `,
+    page: ${page}, per_page: ${per_page}
+    ){
+    paging{
+      total_items,
+      total_pages,
+      current_page
+    },
+    data{
+        id,
+        status,
+        title,
+        organisation{
+            name
+        },
+        earliest_start_date,
+        duration,
+        applications_close_date,
+        available_openings,
+        home_lc{
+            name,
+            parent{
+                name
+            }
+        },
+        sub_product{
+            name,
+        },
+        backgrounds{
+            constant_name
+        },
+        nationalities{
+            constant_name,
+        }
+    }
+    }}`;
+}
+
 QueryCtrl.formAppReq = (req, page, per_page ) =>{
     let QBody = QueryCtrl.formReqBody(page, per_page);
 
@@ -80,9 +119,122 @@ QueryCtrl.formAppReq = (req, page, per_page ) =>{
     };
 }
 
+QueryCtrl.formAccReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunityApplication(
+            filters:{
+                person_committee: ${req.body.lc},
+                date_matched: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
+QueryCtrl.formApdReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunityApplication(
+            filters:{
+                person_committee: ${req.body.lc},
+                date_approved: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
+QueryCtrl.formReReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunityApplication(
+            filters:{
+                person_committee: ${req.body.lc},
+                date_realized: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
+QueryCtrl.formFiReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunityApplication(
+            filters:{
+                person_committee: ${req.body.lc},
+                experience_end_date: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
+QueryCtrl.formCoReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunityApplication(
+            filters:{
+                person_committee: ${req.body.lc},
+                experience_end_date: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
+                status: "completed",
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
+QueryCtrl.formOppReq = (req, page, per_page ) =>{
+    let QBody = QueryCtrl.formOppsReqBody(page, per_page);
+
+    return {
+        headers:{
+            'Authorization' : req.body.token,
+            'Content-Type' : 'application/json'
+
+        },
+        body: JSON.stringify({'query':`{allOpportunity(
+            filters:{
+                programmes: ${req.body.product}
+            }${QBody}`})
+    };
+}
+
 QueryCtrl.getAPPs = async (req, res) =>{
     res.json(
-        await QueryCtrl.processData('APPS', req)
+        await QueryCtrl.processData(req.body.type ,req)
+    );
+}
+
+QueryCtrl.getOPPs = async (req, res) =>{
+    res.json(
+        await QueryCtrl.processOPPsData(req)
     );
 }
 
@@ -92,7 +244,8 @@ QueryCtrl.makeReq = async (DATA) =>{
         count++;
         let r = await QueryCtrl.sendRequest(DATA);
         if( r.statusCode == 200){
-            return JSON.parse(r.body).data.allOpportunityApplication;
+            let bodyP = JSON.parse(r.body);
+            return bodyP.data.allOpportunityApplication? bodyP.data.allOpportunityApplication : bodyP.data.allOpportunity;
         } 
     } while (count <= 10);
 }
@@ -110,12 +263,34 @@ QueryCtrl.sendRequest = (DATA) => {
     });
 }
 
+QueryCtrl.selectType = (type,page) => {
+    let apps;
+        switch (String(type)) {
+            case 'APPs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, page, 100));
+                break;
+            case 'ACCs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formAccReq(req, page, 100));
+                break;
+            case 'APDs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formApdReq(req, page, 100));
+                break;
+            case 'REs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formReReq(req, page, 100));
+                break;
+            case 'FIs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formFiReq(req, page, 100));
+                break;
+            case 'COs':
+                apps = await  QueryCtrl.makeReq(QueryCtrl.formCoReq(req, page, 100));
+                break;
+        }
+    return apps;
+}
+
 QueryCtrl.processData = async (type, req) =>{
     try{
-        let apps;
-        if(String(type).includes('APP')){
-            apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, 1, 100));
-        }
+        let apps = QueryCtrl.selectType(type,1);
         if(apps !== undefined && apps.paging.total_pages <= 100){
             let totalP = apps.paging.total_pages;
             let matrix = [];
@@ -147,27 +322,27 @@ QueryCtrl.processData = async (type, req) =>{
                 apps.data.forEach(app => {
                     try{
                         matrix.push([
-                            app.opportunity.programme.short_name_display,
-                            app.person.id,
-                            app.status,
-                            app.person.full_name,
-                            app.person.contact_detail.phone,
-                            app.person.contact_detail.email,
-                            app.person.meta.allow_phone_communication,
-                            app.person.meta.allow_email_communication,
+                            app.opportunity.programme.short_name_display ? app.opportunity.programme.short_name_display : '',
+                            app.person.id?app.person.id:'',
+                            app.status?app.status:'',
+                            app.person.full_name?app.person.full_name:'',
+                            app.person.contact_detail.phone?app.person.contact_detail.phone:'',
+                            app.person.contact_detail.email?app.person.contact_detail.email:'',
+                            app.person.meta.allow_phone_communication?app.person.meta.allow_phone_communication:'',
+                            app.person.meta.allow_email_communication?app.person.meta.allow_email_communication:'',
                             String(app.created_at).split('T')[0],
                             app.date_matched ? String(app.date_matched).split('T')[0] : '',
                             app.date_approved ? String(app.date_approved).split('T')[0]: '',
                             app.date_realized ? String(app.date_realized).split('T')[0]: '',
                             app.experience_start_date ? String(app.experience_start_date).split('T')[0]: '',
                             app.experience_end_date ? String(app.experience_end_date).split('T')[0]: '',
-                            app.person.home_lc.name,
-                            app.person.home_lc.parent.name,
-                            app.opportunity.id,
-                            app.opportunity.title,
+                            app.person.home_lc.name?app.person.home_lc.name:'',
+                            app.person.home_lc.parent.name?app.person.home_lc.parent.name:'',
+                            app.opportunity.id?app.opportunity.id:'',
+                            app.opportunity.title?app.opportunity.title:'',
                             app.opportunity.sub_product ? app.opportunity.sub_product.name : '-',
-                            app.opportunity.home_lc.name,
-                            app.opportunity.home_lc.parent.name
+                            app.opportunity.home_lc.name?app.opportunity.home_lc.name:'',
+                            app.opportunity.home_lc.parent.name?app.opportunity.home_lc.parent.name:''
                         ]);
                     }catch(err){
                         console.log('Error al guardar una app: ' + err)
@@ -175,9 +350,7 @@ QueryCtrl.processData = async (type, req) =>{
                 });
                 page++;
                 if( page<totalP){
-                    if(String(type).includes('APP')){
-                        apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, page, 100));
-                    }
+                    apps = QueryCtrl.selectType(type,page);
                 }
                 
             } while (page<=totalP);
@@ -209,6 +382,96 @@ QueryCtrl.processData = async (type, req) =>{
             'error': 'Error in request, try again.'
         };
     }
+}
+
+QueryCtrl.processOPPsData = async (req) =>{
+    try{
+        let opps = QueryCtrl.makeReq(QueryCtrl.formOppReq(req, 1, 100));
+        if(opps !== undefined && opps.paging.total_pages <= 100){
+            let totalP = opps.paging.total_pages;
+            let matrix = [];
+            matrix.push([
+                "OPP ID",
+                "STATUS",
+                "TITLE",
+                "ORGANIZATION",
+                "START DATE",
+                "DURATION (WEEKS)",
+                "APPS CLOSING DATE",
+                "SPOTS",
+                "HOST LC",
+                "HOST MC",
+                "SUBPRODUCT",
+                "BACKGROUNDS",
+                "NATIONALITIES"
+            ]);
+            let page = 1;
+            do {
+                opps.data.forEach(app => {
+                    try{
+                        matrix.push([
+                            app.id ? app.id : '',
+                            app.status?app.status:'',
+                            app.title?app.title:'',
+                            app.organisation.name?app.organisation.name:'',
+                            app.earliest_start_date ? String(app.earliest_start_date).split('T')[0] : '',
+                            app.duration ? app.duration : '',
+                            app.applications_close_date ? String(applications_close_date).split('T')[0]: '',
+                            app.available_openings? app.available_openings : '',
+                            app.home_lc.name?app.person.home_lc.name:'',
+                            app.home_lc.parent.name?app.person.home_lc.parent.name:'',
+                            app.sub_product ? app.sub_product.name : '-',
+                            app.backgrounds?QueryCtrl.concatAsString(app.backgrounds):'',
+                            app.nationalities?QueryCtrl.concatAsString(app.nationalities):''
+                        ]);
+                    }catch(err){
+                        console.log('Error al guardar una opp: ' + err)
+                    }
+                });
+                page++;
+                if( page<totalP){
+                    opps = QueryCtrl.makeReq(QueryCtrl.formOppReq(req, page, 100));
+                }
+                
+            } while (page<=totalP);
+
+            QueryCtrl.deleteOldFiles();
+            
+            let pathT  = '/Documents/'+new Date().toISOString().replace(/:/g,"-")+'OPPs.csv';
+            cWriter = csvWriter({
+                path: '.'+pathT
+            });
+
+            await cWriter.writeRecords(matrix).then(() => {
+                console.log(pathT);
+            });
+
+            return {'result': 'Succesful', 'link': pathT}
+
+        }else{
+            //CAMBIAR LUEGO POR RETURN
+            return { 
+                'result': 'error',
+                'error': 'Error in request or Requesting more than 10000 rows.'
+            };
+        }
+    }catch(err){
+        console.log(err);
+        return { 
+            'result': 'error',
+            'error': 'Error in request, try again.'
+        };
+    }
+}
+
+QueryCtrl.concatAsString = (array) =>{
+    let sFinal = '';
+    try{
+        array.forEach(el => sFinal = sFinal + el.constant_name + '/');
+    }catch(er){
+        console.log('Error concatenando: '+er)
+    }
+    return sFinal;
 }
 
 QueryCtrl.deleteOldFiles = () =>{
