@@ -227,6 +227,7 @@ QueryCtrl.formOppReq = (req, page, per_page ) =>{
 }
 
 QueryCtrl.getAPPs = async (req, res) =>{
+    console.log(req.body.type);
     res.json(
         await QueryCtrl.processData(req.body.type ,req)
     );
@@ -263,8 +264,9 @@ QueryCtrl.sendRequest = (DATA) => {
     });
 }
 
-QueryCtrl.selectType = async (type,page) => {
+QueryCtrl.selectType = async (type,req,page) => {
     let apps;
+        console.log(type);
         switch (String(type)) {
             case 'APPs':
                 apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, page, 100));
@@ -290,7 +292,7 @@ QueryCtrl.selectType = async (type,page) => {
 
 QueryCtrl.processData = async (type, req) =>{
     try{
-        let apps = await QueryCtrl.selectType(type,1);
+        let apps = await QueryCtrl.selectType(type,req,1);
         if(apps !== undefined && apps.paging.total_pages <= 100){
             let totalP = apps.paging.total_pages;
             let matrix = [];
@@ -350,7 +352,7 @@ QueryCtrl.processData = async (type, req) =>{
                 });
                 page++;
                 if( page<totalP){
-                    apps = await QueryCtrl.selectType(type,page);
+                    apps = await QueryCtrl.selectType(type,req,page);
                 }
                 
             } while (page<=totalP);
