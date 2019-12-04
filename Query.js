@@ -233,6 +233,7 @@ QueryCtrl.getAPPs = async (req, res) =>{
 }
 
 QueryCtrl.getOPPs = async (req, res) =>{
+    req.setTimeout(0);
     res.json(
         await QueryCtrl.processOPPsData(req)
     );
