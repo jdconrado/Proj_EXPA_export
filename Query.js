@@ -351,7 +351,7 @@ QueryCtrl.processData = async (type, req) =>{
                     }
                 });
                 page++;
-                if( page<totalP){
+                if( page<=totalP){
                     apps = await QueryCtrl.selectType(type,req,page);
                 }
                 
@@ -431,7 +431,7 @@ QueryCtrl.processOPPsData = async (req) =>{
                     }
                 });
                 page++;
-                if( page<totalP){
+                if( page<=totalP){
                     opps = await QueryCtrl.makeReq(QueryCtrl.formOppReq(req, page, 100));
                 }
                 
