@@ -227,7 +227,6 @@ QueryCtrl.formOppReq = (req, page, per_page ) =>{
 }
 
 QueryCtrl.getAPPs = async (req, res) =>{
-    console.log(req.body.type);
     res.json(
         await QueryCtrl.processData(req.body.type ,req)
     );
@@ -257,7 +256,9 @@ QueryCtrl.makeOppReq = async (DATA) =>{
         let r = await QueryCtrl.sendRequest(DATA);
         if( r.statusCode == 200){
             return JSON.parse(r.body).data.allOpportunity;
-        } 
+        } else{
+            console.log(r.statusCode + '----'+r.body)
+        }
     } while (count <= 10);
 }
 
@@ -276,7 +277,6 @@ QueryCtrl.sendRequest = (DATA) => {
 
 QueryCtrl.selectType = async (type,req,page) => {
     let apps;
-        console.log(type);
         switch (String(type)) {
             case 'APPs':
                 apps = await  QueryCtrl.makeReq(QueryCtrl.formAppReq(req, page, 100));
@@ -430,8 +430,8 @@ QueryCtrl.processOPPsData = async (req) =>{
                             app.duration ? app.duration : '',
                             app.applications_close_date ? String(app.applications_close_date).split('T')[0]: '',
                             app.available_openings? app.available_openings : '',
-                            app.home_lc?app.person.home_lc.name:'',
-                            app.home_lc?app.person.home_lc.parent?app.person.home_lc.parent.name : '':'',
+                            app.home_lc?app.home_lc.name:'',
+                            app.home_lc?app.home_lc.parent?app.home_lc.parent.name : '':'',
                             app.sub_product ? app.sub_product.name : '-',
                             app.backgrounds?QueryCtrl.concatAsString(app.backgrounds):'',
                             app.nationalities?QueryCtrl.concatAsString(app.nationalities):''
@@ -442,7 +442,7 @@ QueryCtrl.processOPPsData = async (req) =>{
                 });
                 page++;
                 if( page<=totalP){
-                    opps = await QueryCtrl.makeReq(QueryCtrl.formOppReq(req, page, 100));
+                    opps = await QueryCtrl.makeOppReq(QueryCtrl.formOppReq(req, page, 100));
                 }
                 
             } while (page<=totalP);
