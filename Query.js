@@ -245,8 +245,18 @@ QueryCtrl.makeReq = async (DATA) =>{
         count++;
         let r = await QueryCtrl.sendRequest(DATA);
         if( r.statusCode == 200){
-            let bodyP = JSON.parse(r.body);
-            return bodyP.data.allOpportunityApplication? bodyP.data.allOpportunityApplication : bodyP.data.allOpportunity;
+            return JSON.parse(r.body).data.allOpportunityApplication;
+        } 
+    } while (count <= 10);
+}
+
+QueryCtrl.makeOppReq = async (DATA) =>{
+    let count = 0;
+    do {
+        count++;
+        let r = await QueryCtrl.sendRequest(DATA);
+        if( r.statusCode == 200){
+            return JSON.parse(r.body).data.allOpportunity;
         } 
     } while (count <= 10);
 }
@@ -388,7 +398,7 @@ QueryCtrl.processData = async (type, req) =>{
 
 QueryCtrl.processOPPsData = async (req) =>{
     try{
-        let opps = await QueryCtrl.makeReq(QueryCtrl.formOppReq(req, 1, 100));
+        let opps = await QueryCtrl.makeOppReq(QueryCtrl.formOppReq(req, 1, 100));
         if(opps !== undefined && opps.paging.total_pages <= 100){
             let totalP = opps.paging.total_pages;
             let matrix = [];
@@ -420,8 +430,8 @@ QueryCtrl.processOPPsData = async (req) =>{
                             app.duration ? app.duration : '',
                             app.applications_close_date ? String(app.applications_close_date).split('T')[0]: '',
                             app.available_openings? app.available_openings : '',
-                            app.home_lc.name?app.person.home_lc.name:'',
-                            app.home_lc.parent.name?app.person.home_lc.parent.name:'',
+                            app.home_lc?app.person.home_lc.name:'',
+                            app.home_lc?app.person.home_lc.parent?app.person.home_lc.parent.name : '':'',
                             app.sub_product ? app.sub_product.name : '-',
                             app.backgrounds?QueryCtrl.concatAsString(app.backgrounds):'',
                             app.nationalities?QueryCtrl.concatAsString(app.nationalities):''
