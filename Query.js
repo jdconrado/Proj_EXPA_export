@@ -418,7 +418,7 @@ QueryCtrl.processOPPsData = async (req) =>{
                             app.organisation.name?app.organisation.name:'',
                             app.earliest_start_date ? String(app.earliest_start_date).split('T')[0] : '',
                             app.duration ? app.duration : '',
-                            app.applications_close_date ? String(applications_close_date).split('T')[0]: '',
+                            app.applications_close_date ? String(app.applications_close_date).split('T')[0]: '',
                             app.available_openings? app.available_openings : '',
                             app.home_lc.name?app.person.home_lc.name:'',
                             app.home_lc.parent.name?app.person.home_lc.parent.name:'',
