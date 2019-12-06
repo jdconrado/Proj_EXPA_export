@@ -22,7 +22,9 @@ app.use('/Documents', express.static('Documents'));
 
 //Starting the server
 
-app.listen(app.get('port'), ()=> {
+const server = app.listen(app.get('port'), ()=> {
     console.log('Server on port', app.get('port') );
 });
+
+server.setTimeout(300000);
 

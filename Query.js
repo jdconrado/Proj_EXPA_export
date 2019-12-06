@@ -227,14 +227,12 @@ QueryCtrl.formOppReq = (req, page, per_page ) =>{
 }
 
 QueryCtrl.getAPPs = async (req, res) =>{
-    req.setTimeout(0);
     res.json(
         await QueryCtrl.processData(req.body.type ,req)
     );
 }
 
 QueryCtrl.getOPPs = async (req, res) =>{
-    req.setTimeout(0);
     res.json(
         await QueryCtrl.processOPPsData(req)
     );
