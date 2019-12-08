@@ -3,6 +3,7 @@ const csvWriter = require('csv-writer').createArrayCsvWriter;
 const fs = require('fs');
 const path = require('path');
 const rimraf = require('rimraf');
+const nmailer = require('nodemailer');
 
 const ENDPOINT = 'https://gis-api.aiesec.org/graphql';
 const QueryCtrl = {};
@@ -227,15 +228,11 @@ QueryCtrl.formOppReq = (req, page, per_page ) =>{
 }
 
 QueryCtrl.getAPPs = async (req, res) =>{
-    res.json(
-        await QueryCtrl.processData(req.body.type ,req)
-    );
+    await QueryCtrl.processData(req.body.type ,req, res);
 }
 
 QueryCtrl.getOPPs = async (req, res) =>{
-    res.json(
-        await QueryCtrl.processOPPsData(req)
-    );
+    await QueryCtrl.processOPPsData(req, res);
 }
 
 QueryCtrl.makeReq = async (DATA) =>{
@@ -300,10 +297,15 @@ QueryCtrl.selectType = async (type,req,page) => {
     return apps;
 }
 
-QueryCtrl.processData = async (type, req) =>{
+QueryCtrl.processData = async (type, req, res) =>{
     try{
         let apps = await QueryCtrl.selectType(type,req,1);
         if(apps !== undefined && apps.paging.total_pages <= 100){
+
+            res.json({
+                'result': 'Succesful',
+            });
+
             let totalP = apps.paging.total_pages;
             let matrix = [];
             matrix.push([
@@ -378,28 +380,56 @@ QueryCtrl.processData = async (type, req) =>{
                 console.log(pathT);
             });
 
-            return {'result': 'Succesful', 'link': pathT}
+            //Enviar correo
+            let transporter = nodemailer.createTransport({
+                host: 'gmail',
+                auth: {
+                  user: 'developer.im@aieseccolombia.org', 
+                  pass: req.pass 
+                }
+              });
+            
+              // send mail with defined transport object
+              await transporter.sendMail({
+                from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
+                to: req.mail, // list of receivers
+                subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
+                html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
+                <p> Para descargar los datos solicitados siga el siguiente link: </p>
+                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" > Haga click aquí</a>
+                <p> Recuerda que el link solo estará disponible por una hora, luego de eso, es posible que el archivo sea borrado y el link deje de funcionar.  </p>
+                <p> Esperamos te sea de ayuda. </p>` // html body
+              }, (err, info)=>{
+                  if(err){
+                      console.log(err);
+                  }
+              });
 
         }else{
             //CAMBIAR LUEGO POR RETURN
-            return { 
+            res.json({ 
                 'result': 'error',
                 'error': 'Error in request or Requesting more than 10000 rows.'
-            };
+            });
         }
     }catch(err){
         console.log(err);
-        return { 
+        res.json({ 
             'result': 'error',
             'error': 'Error in request, try again.'
-        };
+        });
     }
 }
 
-QueryCtrl.processOPPsData = async (req) =>{
+QueryCtrl.processOPPsData = async (req, res) =>{
     try{
         let opps = await QueryCtrl.makeOppReq(QueryCtrl.formOppReq(req, 1, 100));
         if(opps !== undefined && opps.paging.total_pages <= 100){
+
+            res.json({
+                'result': 'Succesful',
+            });
+
             let totalP = opps.paging.total_pages;
             let matrix = [];
             matrix.push([
@@ -458,21 +488,45 @@ QueryCtrl.processOPPsData = async (req) =>{
                 console.log(pathT);
             });
 
-            return {'result': 'Succesful', 'link': pathT}
+            // Aquí enviar correo
+
+            let transporter = nodemailer.createTransport({
+                host: 'gmail',
+                auth: {
+                  user: 'developer.im@aieseccolombia.org', 
+                  pass: req.pass 
+                }
+              });
+            
+              // send mail with defined transport object
+              await transporter.sendMail({
+                from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
+                to: req.mail, // list of receivers
+                subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
+                html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
+                <p> Para descargar los datos solicitados siga el siguiente link: </p>
+                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" > Haga click aquí</a>
+                <p> Recuerda que el link solo estará disponible por una hora, luego de eso, es posible que el archivo sea borrado y el link deje de funcionar.  </p>
+                <p> Esperamos te sea de ayuda. </p>` // html body
+              }, (err, info)=>{
+                  if(err){
+                      console.log(err);
+                  }
+              });
 
         }else{
             //CAMBIAR LUEGO POR RETURN
-            return { 
+            res.json({ 
                 'result': 'error',
                 'error': 'Error in request or Requesting more than 10000 rows.'
-            };
+            });
         }
     }catch(err){
         console.log(err);
-        return { 
+        res.json( { 
             'result': 'error',
             'error': 'Error in request, try again.'
-        };
+        });
     }
 }
 
