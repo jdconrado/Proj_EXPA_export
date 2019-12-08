@@ -381,7 +381,7 @@ QueryCtrl.processData = async (type, req, res) =>{
             });
 
             //Enviar correo
-            let transporter = nodemailer.createTransport({
+            let transporter = nmailer.createTransport({
                 host: "smtp.gmail.com",
                 service: "gmail",
                 port: 587,
@@ -393,7 +393,7 @@ QueryCtrl.processData = async (type, req, res) =>{
                 tls: {
                     rejectUnauthorized: false
                 }
-              });
+            });
             
               // send mail with defined transport object
               await transporter.sendMail({
@@ -497,12 +497,18 @@ QueryCtrl.processOPPsData = async (req, res) =>{
             // Aquí enviar correo
 
             let transporter = nmailer.createTransport({
-                host: 'smtp.gmail.com',
+                host: "smtp.gmail.com",
+                service: "gmail",
+                port: 587,
+                secure: false,
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
                   pass: req.pass 
+                },
+                tls: {
+                    rejectUnauthorized: false
                 }
-              });
+            });
             
               // send mail with defined transport object
               await transporter.sendMail({
