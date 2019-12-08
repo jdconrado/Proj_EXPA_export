@@ -382,7 +382,7 @@ QueryCtrl.processData = async (type, req, res) =>{
 
             //Enviar correo
             let transporter = nodemailer.createTransport({
-                host: 'gmail',
+                host: 'smtp.gmail.com',
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
                   pass: req.pass 
@@ -491,7 +491,7 @@ QueryCtrl.processOPPsData = async (req, res) =>{
             // Aquí enviar correo
 
             let transporter = nmailer.createTransport({
-                host: 'gmail',
+                host: 'smtp.gmail.com',
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
                   pass: req.pass 
