@@ -383,6 +383,8 @@ QueryCtrl.processData = async (type, req, res) =>{
             //Enviar correo
             let transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
+                port: 587,
+                secure: false,
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
                   pass: req.pass 
