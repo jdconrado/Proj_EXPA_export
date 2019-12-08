@@ -382,13 +382,13 @@ QueryCtrl.processData = async (type, req, res) =>{
 
             //Enviar correo
             let transporter = nmailer.createTransport({
-                host: "smtp.gmail.com",
-                service: "gmail",
+                host: 'smtp.gmail.com',
+                service: 'gmail',
                 port: 587,
                 secure: false,
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
-                  pass: req.pass 
+                  pass: req.body.pass 
                 },
                 tls: {
                     rejectUnauthorized: false
@@ -398,7 +398,7 @@ QueryCtrl.processData = async (type, req, res) =>{
               // send mail with defined transport object
               await transporter.sendMail({
                 from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
-                to: req.mail, // list of receivers
+                to: req.body.mail, // list of receivers
                 subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
                 html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
                 <p> Para descargar los datos solicitados siga el siguiente link: </p>
@@ -497,13 +497,13 @@ QueryCtrl.processOPPsData = async (req, res) =>{
             // Aquí enviar correo
 
             let transporter = nmailer.createTransport({
-                host: "smtp.gmail.com",
-                service: "gmail",
+                host: 'smtp.gmail.com',
+                service: 'gmail',
                 port: 587,
                 secure: false,
                 auth: {
                   user: 'developer.im@aieseccolombia.org', 
-                  pass: req.pass 
+                  pass: req.body.pass 
                 },
                 tls: {
                     rejectUnauthorized: false
@@ -513,7 +513,7 @@ QueryCtrl.processOPPsData = async (req, res) =>{
               // send mail with defined transport object
               await transporter.sendMail({
                 from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
-                to: req.mail, // list of receivers
+                to: req.body.mail, // list of receivers
                 subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
                 html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
                 <p> Para descargar los datos solicitados siga el siguiente link: </p>
