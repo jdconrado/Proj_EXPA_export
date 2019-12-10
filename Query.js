@@ -370,8 +370,9 @@ QueryCtrl.processData = async (type, req, res) =>{
             } while (page<=totalP);
 
             QueryCtrl.deleteOldFiles();
+            let date = new Date();
             
-            let pathT  = '/Documents/'+new Date().toISOString().replace(/:/g,"-")+'APPs.csv';
+            let pathT  = '/Documents/'+date.toISOString().replace(/:/g,"-")+'APPs.csv';
             cWriter = csvWriter({
                 path: '.'+pathT
             });
@@ -399,12 +400,12 @@ QueryCtrl.processData = async (type, req, res) =>{
               await transporter.sendMail({
                 from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
                 to: req.body.mail, // list of receivers
-                subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
-                html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
-                <p> Para descargar los datos solicitados siga el siguiente link: </p>
-                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" > Haga click aquí</a>
-                <p> Recuerda que el link solo estará disponible por una hora, luego de eso, es posible que el archivo sea borrado y el link deje de funcionar.  </p>
-                <p> Esperamos te sea de ayuda. </p>` // html body
+                subject: `[IMP] ${date.toTimeString()} Your request have been processed: Link to the extracted EXPA Info`, // Subject line
+                html: `<b>REQUEST SUCCESSFULLY COMPLETED</b>
+                <p> In order to download the requested data, please follow this link: </p>
+                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" >CLICK HERE</a>
+                <p> Please remember that the link will only be avaliable for an hour, after that, the file may be deleted and the link may stop working. </p>
+                <p> Hope it is useful for you. </p>` // html body
               }, (err, info)=>{
                   if(err){
                       console.log(err);
@@ -514,12 +515,12 @@ QueryCtrl.processOPPsData = async (req, res) =>{
               await transporter.sendMail({
                 from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
                 to: req.body.mail, // list of receivers
-                subject: '[IMP] Solicitud Procesada: Link con Info de EXPA Extraida', // Subject line
-                html: `<b>SOLICITUD COMPLETADA CON EXITO</b>
-                <p> Para descargar los datos solicitados siga el siguiente link: </p>
-                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" > Haga click aquí</a>
-                <p> Recuerda que el link solo estará disponible por una hora, luego de eso, es posible que el archivo sea borrado y el link deje de funcionar.  </p>
-                <p> Esperamos te sea de ayuda. </p>` // html body
+                subject: `[IMP] ${date.toTimeString()} Your request have been processed: Link to the extracted EXPA Info`, // Subject line
+                html: `<b>REQUEST SUCCESSFULLY COMPLETED</b>
+                <p> In order to download the requested data, please follow this link: </p>
+                <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" >CLICK HERE</a>
+                <p> Please remember that the link will only be avaliable for an hour, after that, the file may be deleted and the link may stop working. </p>
+                <p> Hope it is useful for you. </p>` // html body
               }, (err, info)=>{
                   if(err){
                       console.log(err);
