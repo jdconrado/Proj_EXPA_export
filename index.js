@@ -15,6 +15,7 @@ app.use(express.json());
 
 app.post('/applications/', QueryCtrl.getAPPs);
 app.post('/opportunities/', QueryCtrl.getOPPs);
+app.post('/standards/', QueryCtrl.getSnS);
 
 //Static files
 
