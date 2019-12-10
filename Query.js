@@ -485,8 +485,9 @@ QueryCtrl.processOPPsData = async (req, res) =>{
             } while (page<=totalP);
 
             QueryCtrl.deleteOldFiles();
+            let date = new Date();
             
-            let pathT  = '/Documents/'+new Date().toISOString().replace(/:/g,"-")+'OPPs.csv';
+            let pathT  = '/Documents/'+date.toISOString().replace(/:/g,"-")+'OPPs.csv';
             cWriter = csvWriter({
                 path: '.'+pathT
             });
