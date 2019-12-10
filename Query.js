@@ -627,7 +627,7 @@ QueryCtrl.processSnSData = async (req, res) =>{
                                 row.push(standard.option ? standard.option : 'Not answered')
                             });
                             app.nps_response.questions.forEach(question => {
-                                row.push(question.nps_answer ? String(nps_answer) : 'Not answered')
+                                row.push(question.nps_answer ? String(question.nps_answer) : 'Not answered')
                             });
                         matrix.push(row);
                     }catch(err){
