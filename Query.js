@@ -28,9 +28,9 @@ QueryCtrl.formReqBody = (page, per_page) => {
       person{
         id,
         full_name,
+        email,
         contact_detail{
-          phone,
-          email
+          phone
         },
         meta{
           allow_email_communication,
@@ -414,8 +414,8 @@ QueryCtrl.processData = async (type, req, res) =>{
                             app.person.id?app.person.id:'',
                             app.status?app.status:'',
                             app.person.full_name?app.person.full_name:'',
-                            app.person.contact_detail.phone?app.person.contact_detail.phone:'',
-                            app.person.contact_detail.email?app.person.contact_detail.email:'',
+                            app.person.contact_detail?app.person.contact_detail.phone:'',
+                            app.person.email?app.person.email:'',
                             app.person.meta.allow_phone_communication?app.person.meta.allow_phone_communication:'',
                             app.person.meta.allow_email_communication?app.person.meta.allow_email_communication:'',
                             String(app.created_at).split('T')[0],
