@@ -164,7 +164,7 @@ QueryCtrl.formAppReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 created_at: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -182,7 +182,7 @@ QueryCtrl.formAccReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 date_matched: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -200,7 +200,7 @@ QueryCtrl.formApdReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 date_approved: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -218,7 +218,7 @@ QueryCtrl.formReReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 date_realized: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -236,7 +236,7 @@ QueryCtrl.formFiReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 experience_end_date: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -254,7 +254,7 @@ QueryCtrl.formStandardsReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 experience_end_date: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 programmes: ${req.body.product}
             }${QBody}`})
@@ -272,7 +272,7 @@ QueryCtrl.formCoReq = (req, page, per_page ) =>{
         },
         body: JSON.stringify({'query':`{allOpportunityApplication(
             filters:{
-                person_committee: ${req.body.lc},
+                ${req.body.xType}_committee: ${req.body.lc},
                 experience_end_date: {from: "${req.body.dateFrom}", to:"${req.body.dateTo}"},
                 status: "completed",
                 programmes: ${req.body.product}
