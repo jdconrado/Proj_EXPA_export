@@ -626,7 +626,7 @@ QueryCtrl.processSnSData = async (req, res) =>{
                             app.opportunity.home_lc.name?app.opportunity.home_lc.name:'',
                             app.opportunity.home_lc.parent.name?app.opportunity.home_lc.parent.name:'']
                             app.standards.forEach( standard => {
-                                row.push(standard.option ? standard.option : 'Not answered')
+                                row.push(standard.standard_option ? standard.standard_option.option : 'Not answered')
                             });
                             /*app.nps_response.questions.forEach(question => {
                                 row.push(question.nps_answer ? String(question.nps_answer) : 'Not answered')
