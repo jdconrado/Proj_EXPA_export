@@ -102,6 +102,13 @@ QueryCtrl.formOppsReqBody = (page, per_page) => {
     }}`;
 }
 
+/* nps_response{ ----- ADD TO THE SNS QUERY ONCE IS FIXED
+          questions{
+            nps_answer
+          }
+        },
+ */
+
 QueryCtrl.formStandardsReqBody = (page, per_page) => {
     return `,
     page: ${page}, per_page: ${per_page}
@@ -114,11 +121,6 @@ QueryCtrl.formStandardsReqBody = (page, per_page) => {
     data{
         status,
         experience_end_date,
-        nps_response{
-          questions{
-            nps_answer
-          }
-        },
         standards{
           standard_option{
             option
@@ -626,9 +628,9 @@ QueryCtrl.processSnSData = async (req, res) =>{
                             app.standards.forEach( standard => {
                                 row.push(standard.option ? standard.option : 'Not answered')
                             });
-                            app.nps_response.questions.forEach(question => {
+                            /*app.nps_response.questions.forEach(question => {
                                 row.push(question.nps_answer ? String(question.nps_answer) : 'Not answered')
-                            });
+                            });*/
                         matrix.push(row);
                     }catch(err){
                         console.log('Error al guardar una app: ' + err)
