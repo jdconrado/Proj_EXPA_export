@@ -448,7 +448,7 @@ QueryCtrl.processData = async (type, req, res) =>{
             QueryCtrl.deleteOldFiles();
             let date = new Date();
             
-            let pathT  = '/Documents/'+date.toISOString().replace(/:/g,"-")+'APPs.csv';
+            let pathT  = '/Documents/'+date.toISOString().replace(/:/g,"-")+type+'.csv';
             cWriter = csvWriter({
                 path: '.'+pathT
             });
@@ -731,7 +731,7 @@ QueryCtrl.sendEmail = async (req, pathT, date) =>{
     await transporter.sendMail({
     from: '"OGT-EST-20.1" <donotreply@aieseccolombia.com>', // sender address
     to: req.body.mail, // list of receivers
-    subject: `[IMP] ${date.toISOString()} Your request have been processed: Link to the extracted EXPA Info`, // Subject line
+    subject: `[IMP] ${date.toISOString()} Your request have been processed: Link to the extracted ${req.body.type}`, // Subject line
     html: `<b>REQUEST SUCCESSFULLY COMPLETED</b>
     <p> In order to download the requested data, please follow this link: </p>
     <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" >CLICK HERE</a>
