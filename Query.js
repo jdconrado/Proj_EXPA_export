@@ -6,6 +6,7 @@ const rimraf = require('rimraf');
 const nmailer = require('nodemailer');
 
 const ENDPOINT = 'https://gis-api.aiesec.org/graphql';
+const SLINK = 'http://expa-export-expa-export.apps.us-east-2.starter.openshift-online.com';
 const QueryCtrl = {};
 
 QueryCtrl.formReqBody = (page, per_page) => {
@@ -734,7 +735,7 @@ QueryCtrl.sendEmail = async (req, pathT, date) =>{
     subject: `[IMP] ${date.toISOString()} Your request have been processed: Link to the extracted ${req.body.type}`, // Subject line
     html: `<b>REQUEST SUCCESSFULLY COMPLETED</b>
     <p> In order to download the requested data, please follow this link: </p>
-    <a href="http://expa-export-proj-expa-export.apps.us-east-2.starter.openshift-online.com${pathT}" >CLICK HERE</a>
+    <a href="${SLINK}${pathT}" >CLICK HERE</a>
     <p> Please remember that the link will only be avaliable for an hour, after that, the file may be deleted and the link may stop working. </p>
     <p> Hope it is useful for you. </p>` // html body
     }, (err, info)=>{
