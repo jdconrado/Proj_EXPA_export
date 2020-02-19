@@ -24,7 +24,6 @@ QueryCtrl.formReqBody = (page, per_page) => {
       date_matched,
       date_approved,
       date_realized,
-      experience_start_date,
       experience_end_date,
       person{
         id,
@@ -46,6 +45,7 @@ QueryCtrl.formReqBody = (page, per_page) => {
       },
       opportunity{
         id,
+        earliest_start_date,
         sub_product{
           name
         },
@@ -425,7 +425,7 @@ QueryCtrl.processData = async (type, req, res) =>{
                             app.date_matched ? String(app.date_matched).split('T')[0] : '',
                             app.date_approved ? String(app.date_approved).split('T')[0]: '',
                             app.date_realized ? String(app.date_realized).split('T')[0]: '',
-                            app.experience_start_date ? String(app.experience_start_date).split('T')[0]: '',
+                            app.opportunity.earliest_start_date ? String(app.opportunity.earliest_start_date).split('T')[0]: '',
                             app.experience_end_date ? String(app.experience_end_date).split('T')[0]: '',
                             app.person.home_lc.name?app.person.home_lc.name:'',
                             app.person.home_lc.parent.name?app.person.home_lc.parent.name:'',
