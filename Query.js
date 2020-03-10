@@ -6,7 +6,7 @@ const rimraf = require('rimraf');
 const nmailer = require('nodemailer');
 
 const ENDPOINT = 'https://gis-api.aiesec.org/graphql';
-const SLINK = 'http://expa-export-expa-export.apps.us-east-2.starter.openshift-online.com';
+const SLINK = 'http://proj-expa-export-expa-export.apps.us-west-1.starter.openshift-online.com/';
 const QueryCtrl = {};
 
 QueryCtrl.formReqBody = (page, per_page) => {
