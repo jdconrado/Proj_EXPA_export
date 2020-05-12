@@ -7,7 +7,7 @@ const nmailer = require("nodemailer");
 
 const ENDPOINT = "https://gis-api.aiesec.org/graphql";
 const SLINK =
-  "http://proj-expa-export-expa-export.apps.us-west-1.starter.openshift-online.com";
+  "http://expex-expaex.apps.us-east-1.starter.openshift-online.com/";
 const QueryCtrl = {};
 
 QueryCtrl.formReqBody = (page, per_page) => {
