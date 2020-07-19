@@ -7,7 +7,7 @@ const nmailer = require("nodemailer");
 
 const ENDPOINT = "https://gis-api.aiesec.org/graphql";
 const SLINK =
-  "http://expex-expaex.apps.us-east-1.starter.openshift-online.com";
+  "http://aieseccolombia.org:8443";
 const QueryCtrl = {};
 
 QueryCtrl.formReqBody = (page, per_page) => {
@@ -309,15 +309,64 @@ QueryCtrl.formOppReq = (req, page, per_page) => {
 };
 
 QueryCtrl.getAPPs = async (req, res) => {
-  await QueryCtrl.processData(req.body.type, req, res);
+  let mails = req.body.mail.split(",");
+  let pass = true;
+  for (let index = 0; index < mails.length; index++) {
+    let element = mails[index];
+    if (!element.includes("@aiesec.net")){
+      pass = false;
+      break;
+    }
+  }
+  if(pass){
+    await QueryCtrl.processData(req.body.type, req, res);
+  }else{
+    res.json({
+      result: "error",
+      error: "Mails not valid."
+    });
+  }
+  
 };
 
 QueryCtrl.getOPPs = async (req, res) => {
-  await QueryCtrl.processOPPsData(req, res);
+  let mails = req.body.mail.split(",");
+  let pass = true;
+  for (let index = 0; index < mails.length; index++) {
+    let element = mails[index];
+    if (!element.includes("@aiesec.net")){
+      pass = false;
+      break;
+    }
+  }
+  if(pass){
+    await QueryCtrl.processOPPsData(req, res);
+  }else{
+    res.json({
+      result: "error",
+      error: "Mails not valid."
+    });
+  }
 };
 
 QueryCtrl.getSnS = async (req, res) => {
-  await QueryCtrl.processSnSData(req, res);
+  let mails = req.body.mail.split(",");
+  let pass = true;
+  for (let index = 0; index < mails.length; index++) {
+    let element = mails[index];
+    if (!element.includes("@aiesec.net")){
+      pass = false;
+      break;
+    }
+  }
+  if(pass){
+    await QueryCtrl.processSnSData(req, res);
+  }else{
+    res.json({
+      result: "error",
+      error: "Mails not valid."
+    });
+  }
 };
 
 QueryCtrl.makeReq = async DATA => {
@@ -473,7 +522,7 @@ QueryCtrl.processData = async (type, req, res) => {
       let date = new Date();
 
       let pathT =
-        "/Documents/" + date.toISOString().replace(/:/g, "-") + type + ".csv";
+        "/Documents/" + date.toISOString().replace(/:/g, "-") + type +Math.random().toString(20).substring(2,15)+ ".csv";
       cWriter = csvWriter({
         path: "." + pathT
       });
@@ -569,7 +618,7 @@ QueryCtrl.processOPPsData = async (req, res) => {
       let date = new Date();
 
       let pathT =
-        "/Documents/" + date.toISOString().replace(/:/g, "-") + "OPPs.csv";
+        "/Documents/" + date.toISOString().replace(/:/g, "-") + "OPPs"+Math.random().toString(20).substring(2,15)+".csv";
       cWriter = csvWriter({
         path: "." + pathT
       });
@@ -696,7 +745,7 @@ QueryCtrl.processSnSData = async (req, res) => {
       let date = new Date();
 
       let pathT =
-        "/Documents/" + date.toISOString().replace(/:/g, "-") + "SnS.csv";
+        "/Documents/" + date.toISOString().replace(/:/g, "-") + "SnS"+Math.random().toString(20).substring(2,15)+".csv";
       cWriter = csvWriter({
         path: "." + pathT
       });
