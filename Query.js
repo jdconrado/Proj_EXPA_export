@@ -313,7 +313,7 @@ QueryCtrl.getAPPs = async (req, res) => {
   let pass = true;
   for (let index = 0; index < mails.length; index++) {
     let element = mails[index];
-    if (!element.includes("@aiesec.net")){
+    if (!(element.endsWith("@aiesec.net") || element.endsWith("@aieseccolombia.org"))){
       pass = false;
       break;
     }
@@ -334,7 +334,7 @@ QueryCtrl.getOPPs = async (req, res) => {
   let pass = true;
   for (let index = 0; index < mails.length; index++) {
     let element = mails[index];
-    if (!element.includes("@aiesec.net")){
+    if (!(element.endsWith("@aiesec.net") || element.endsWith("@aieseccolombia.org"))){
       pass = false;
       break;
     }
@@ -353,8 +353,8 @@ QueryCtrl.getSnS = async (req, res) => {
   let mails = req.body.mail.split(",");
   let pass = true;
   for (let index = 0; index < mails.length; index++) {
-    let element = mails[index];
-    if (!element.includes("@aiesec.net")){
+    let element = mails[index].trim();
+    if (!(element.endsWith("@aiesec.net") || element.endsWith("@aieseccolombia.org"))){
       pass = false;
       break;
     }
